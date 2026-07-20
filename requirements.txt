@@ -1,0 +1,17 @@
+# Python dependencies for the 16S pathogenicity pipeline.
+# Install:  pip install -r requirements.txt
+# Bioinformatics tools (blast, barrnap, ppanggolin, mafft, fasttree) are installed
+# separately via conda -c bioconda (see README, Installation).
+
+pandas
+numpy
+scikit-learn>=1.3
+matplotlib
+seaborn
+scipy
+statsmodels
+goatools
+requests
+tqdm
+biopython
+nbformat

@@ -1,0 +1,41 @@
+# ---- large / generated data (do NOT commit) ----
+datasets/
+*.fna
+*.fasta
+*.fa
+*.fastq
+*.gbff
+*.gz
+*.tar
+
+# pipeline outputs
+16s_pipeline_outputs/
+06_16s_pathogen_calls/
+05_16s_from_mags/
+model_b_validation/
+genome_resolved_bridge/
+*.aln
+*.nwk
+
+# large model artifacts — commit deliberately if small enough, else keep out
+saved_model_16s/ref_16s/
+saved_model_16s/*.pkl
+# keep: kmer_index.json, pathogen_16s_catalog.json (small, needed for inference)
+
+# BLAST db files
+*.n[a-z][a-z]
+*.p[a-z][a-z]
+
+# ---- python ----
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+env/
+.env
+
+# ---- os / editor ----
+.DS_Store
+*.swp
+.idea/
+.vscode/
