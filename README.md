@@ -90,24 +90,43 @@ Model B accuracy is measured on its 1,432 labeled genes with `validate_16s_model
 
 ## Pipeline at a Glance
 
+![16S genome-resolved pathogenicity pipeline](docs/pipeline_overview.png)
+
+Genome-resolved 16S rRNA genes are extracted from every wastewater MAG
+(`extract_16s.py`), then scored by a two-model ensemble: **Model A** identifies the
+organism by nearest-neighbour BLAST against a 26,877-sequence 16S reference, and
+**Model B** classifies pathogenicity from the sequence's canonical 6-mer composition
+with a Random Forest. A **precision-biased fusion layer** combines them into one of
+five tiers (`PATHOGEN`, `OPPORTUNIST`, `NON-PATHOGEN`, `REVIEW`, `UNKNOWN`), with the
+high-precision identifier leading and the classifier deriving a call only when
+identity cannot resolve the input. Two downstream branches close the loop:
+**validation** measures the classifier's accuracy (stratified + leave-one-genus-out
+cross-validation), and the **genome-resolved bridge** runs a pangenome + GO
+enrichment on the source MAGs of every flagged pathogen.
+
+<details>
+<summary>Text-only version (for terminals)</summary>
+
 ```
 5,328 wastewater MAGs
-      │  barrnap + GFF  (extract_16s.py)
-      ▼
-genome-resolved representative 16S  (≈1,321, one per MAG)
-      │
-      ├── Model A: blastn vs 16S RefSeq (26,877) ── taxonomy + rank
-      └── Model B: canonical 6-mer (2,080) ── Random Forest ── P(pathogen)
-                         │
-                         ▼
+      |  barrnap + GFF  (extract_16s.py)
+      v
+genome-resolved representative 16S  (~1,321, one per MAG)
+      |
+      +-- Model A: blastn vs 16S RefSeq (26,877) --> taxonomy + rank
+      +-- Model B: canonical 6-mer (2,080) --> Random Forest --> P(pathogen)
+                         |
+                         v
         precision-biased fusion (+ reject option)
-                         │
-     PATHOGEN · OPPORTUNIST · NON-PATHOGEN · REVIEW · UNKNOWN
-                         │
-      ┌──────────────────┴───────────────────┐
+                         |
+     PATHOGEN . OPPORTUNIST . NON-PATHOGEN . REVIEW . UNKNOWN
+                         |
+      +------------------+-------------------+
    validation (CV + leave-genus-out)   genome-resolved bridge
-   → accuracy / AUROC / calibration    → pangenome + GO enrichment
+   -> accuracy / AUROC / calibration   -> pangenome + GO enrichment
 ```
+
+</details>
 
 ---
 

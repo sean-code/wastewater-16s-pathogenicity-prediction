@@ -22,9 +22,24 @@ saved_model_16s/ref_16s/
 saved_model_16s/*.pkl
 # keep: kmer_index.json, pathogen_16s_catalog.json (small, needed for inference)
 
-# BLAST db files
-*.n[a-z][a-z]
-*.p[a-z][a-z]
+# BLAST db files (nucleotide + protein index extensions)
+*.nhr
+*.nin
+*.nsq
+*.nog
+*.nsd
+*.nsi
+*.ndb
+*.not
+*.ntf
+*.nto
+*.phr
+*.pin
+*.psq
+
+# keep documentation assets (diagrams) tracked
+!docs/
+!docs/*.png
 
 # ---- python ----
 __pycache__/
